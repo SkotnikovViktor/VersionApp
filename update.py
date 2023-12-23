@@ -1,2 +1,6 @@
-import os
-os.startfile('/home/viktor/Рабочий стол/VersionApp/font/Ubuntu-Bold.ttf')
+def amam():
+    global a
+    a =5
+    return a
+b = amam()
+print(b)
