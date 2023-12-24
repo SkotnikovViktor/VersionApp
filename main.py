@@ -25,10 +25,10 @@ def save_op():
     # Создана переменная name_op для того, чтобы принять информацию об введёном ОП пользователя
     name_op = input_name_op.get()
     if len(name_op)==0:
-           label_save= Label(text='Введите название ОП!',fg = 'red');label_save.place(x=325,y=62)
+           label_save= Label(text='Введите название ОП!',fg = 'red',underline=0);label_save.place(x=325,y=62)
     else:
         if check_watch_button==1:
-                label_save= Label(text='Изменения сохранены!',fg = 'green');label_save.place(x=325,y=62)
+                label_save= Label(text='Изменения сохранены!',fg = 'green',underline=0);label_save.place(x=325,y=62)
                 # Создаём кнопку для установки программы для введёной ОП, а также проверяем отступ
                 button_install_program = Button(text=f'Установить программу для: {name_op}',underline=0);button_install_program.place(x=400-len(name_op)*3,y=465)
                 # Сохраняем эту информацию в файл с флагом "w" если файл нету, то создаётся новый, а если есть то файл перезаписываеться
@@ -36,7 +36,7 @@ def save_op():
                 # Записываем эту информацию в файл, и убираем все пробелы методом replace
                 file_op.write(name_op.replace(' ',''))       
         else:
-            label_save = Label(text='Сохранено!',fg='green');label_save.place(x=325,y=62)
+            label_save = Label(text='Сохранено!',fg='green',underline=0);label_save.place(x=325,y=62)
             # Создаём кнопку для установки программы для введёной ОП, а также проверяем отступ
             button_install_program = Button(text=f'Установить программу для: {name_op}',underline=0);button_install_program.place(x=400-len(name_op)*3,y=465)
             # Сохраняем эту информацию в файл с флагом "w" если файл нету, то создаётся новый, а если есть то файл перезаписываеться
