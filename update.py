@@ -1,6 +1,3 @@
-def amam():
-    global a
-    a =5
-    return a
-b = amam()
-print(b)
+file_save_op = open('information_op.txt','r')
+file = file_save_op.read()
+print(file)

@@ -17,6 +17,35 @@ windows.geometry('680x500')
 windows.title('Настройки')
 
 
+#### Начало функции по установке версии файла
+def install_file():
+     # Собираем информации из виджета entry
+     information_choose_op = input_name_op.get()
+     # Открвыаем файл с сохранёной информацией об ОП
+     file_save_op = open('information_op.txt','r')
+     file = file_save_op.read()
+     # Открвыаем файл с сохраненым названиями ОП(windows системы)
+     file_op_windows = open('choose_system_windows.txt','r')
+     file_windows = file_op_windows.read()
+    # Открываем файл с сохранёным названиями ОП (linux системы)
+     file_op_linux = open('choose_system_linux.txt','r')
+     file_linux = file_op_linux.read()
+     if file in file_linux:
+          print("Начинаю установку прогруммы для систем linux")
+          wget.download('https://drive.google.com/file/d/1uqIwCfQJfpcI8IAjMu_lkdxzza1qc-6F/view?usp=drive_link')
+
+     elif file in file_windows:
+          print('Начинаю усановку программу для системы Windiws')
+          wget.download('https://drive.google.com/file/d/1uqIwCfQJfpcI8IAjMu_lkdxzza1qc-6F/view?usp=drive_link')
+    
+          
+    
+
+#### Конец функции
+
+
+
+
 # Здесь создаётся функция по сохранению информации об операционной системы пользователя
 ### Начало функции
 def save_op():
@@ -30,7 +59,7 @@ def save_op():
         if check_watch_button==1:
                 label_save= Label(text='Изменения сохранены!',fg = 'green',underline=0);label_save.place(x=325,y=62)
                 # Создаём кнопку для установки программы для введёной ОП, а также проверяем отступ
-                button_install_program = Button(text=f'Установить программу для: {name_op}',underline=0);button_install_program.place(x=400-len(name_op)*3,y=465)
+                button_install_program = Button(text=f'Установить программу для: {name_op}',underline=0,command=install_file);button_install_program.place(x=400-len(name_op)*3,y=465)
                 # Сохраняем эту информацию в файл с флагом "w" если файл нету, то создаётся новый, а если есть то файл перезаписываеться
                 file_op = open('information_op.txt','w')
                 # Записываем эту информацию в файл, и убираем все пробелы методом replace
@@ -38,7 +67,7 @@ def save_op():
         else:
             label_save = Label(text='Сохранено!',fg='green',underline=0);label_save.place(x=325,y=62)
             # Создаём кнопку для установки программы для введёной ОП, а также проверяем отступ
-            button_install_program = Button(text=f'Установить программу для: {name_op}',underline=0);button_install_program.place(x=400-len(name_op)*3,y=465)
+            button_install_program = Button(text=f'Установить программу для: {name_op}',underline=0,command=install_file);button_install_program.place(x=400-len(name_op)*3,y=465)
             # Сохраняем эту информацию в файл с флагом "w" если файл нету, то создаётся новый, а если есть то файл перезаписываеться
             file_op = open('information_op.txt','w')
             # Записываем эту информацию в файл, и убираем все пробелы методом replace
@@ -46,7 +75,6 @@ def save_op():
     check_watch_button = 1
     return name_op
     #### Конец функции
-
 
 
 
@@ -60,14 +88,6 @@ input_name_op = Entry(text = 'Введите название ПО:',font='Ubunt
 # Создаем кнопку для сохранения, названия ОП, наследует функция save_op
 button_save = Button(underline=0,text='Сохранить название операционной системы.',command=save_op);button_save.place(x=1,y=90)
 
-
-
-##### Тестовая ветка(пока в разработке)
-# Создаём текстовое поле с тектом "Установка зависимых пакетов:"
-text_install_package = Label(text='Установка зависимых пакетов:',font='Ubuntu',underline=0);text_install_package.place(x=1,y=160)
-# Создание кнопки для установки зависимых пактов: шрифтов и так далее...
-button_install_package = Button(underline=0,text='Установить зависимые пакеты.');button_install_package.place(x=1,y=190)
-##### Тестовая ветка(пока в разработке)
 
 
 # Создание вечного цикла, для работы приложения
