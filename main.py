@@ -19,24 +19,34 @@ windows.title('Настройки')
 
 #### Начало функции по установке версии файла
 def install_file():
-     # Собираем информации из виджета entry
-     information_choose_op = input_name_op.get()
-     # Открвыаем файл с сохранёной информацией об ОП
-     file_save_op = open('information_op.txt','r')
-     file = file_save_op.read()
-     # Открвыаем файл с сохраненым названиями ОП(windows системы)
-     file_op_windows = open('choose_system_windows.txt','r')
-     file_windows = file_op_windows.read()
-    # Открываем файл с сохранёным названиями ОП (linux системы)
-     file_op_linux = open('choose_system_linux.txt','r')
-     file_linux = file_op_linux.read()
-     if file in file_linux:
-          print("Начинаю установку прогруммы для систем linux")
-          wget.download('https://drive.google.com/file/d/1uqIwCfQJfpcI8IAjMu_lkdxzza1qc-6F/view?usp=drive_link')
+       global out_infomation_install
+       # Собираем информации из виджета entry
+       information_choose_op = input_name_op.get()
+       # Открвыаем файл с сохранёной информацией об ОП
+       file_save_op = open('information_op.txt','r')
+       file = file_save_op.read()
+       # Открвыаем файл с сохраненым названиями ОП(windows системы)
+       file_op_windows = open('choose_system_windows.txt','r')
+       file_windows = file_op_windows.read()
+       # Открываем файл с сохранёным названиями ОП (linux системы)
+       file_op_linux = open('choose_system_linux.txt','r')
+       file_linux = file_op_linux.read()
 
-     elif file in file_windows:
-          print('Начинаю усановку программу для системы Windiws')
-          wget.download('https://drive.google.com/file/d/1uqIwCfQJfpcI8IAjMu_lkdxzza1qc-6F/view?usp=drive_link')
+       if file_linux in file:
+            print("YES")
+            out_information_install = Label(text=f'Начинаю установку программы для операционной системы: Linux',font='Ubuntu');out_information_install.place(x=1,y=250)
+            #wget.download('https://drive.google.com/file/d/1VeukkuOYLjaci5JRMca64TRxfClrllxS/view?usp=sharing')
+
+       elif file_windows in file:
+            out_information_install = Label(text=f'Начинаю установку программы для операционной системы: Windows',font='Ubuntu');out_information_install.place(x=1,y=250)
+            #wget.download('https://drive.google.com/file/d/1VeukkuOYLjaci5JRMca64TRxfClrllxS/view?usp=sharing')
+
+
+       else:
+           print("NO")
+           out_infomation_false = Label(text='Такой системы нет!',font='Ubuntu');out_infomation_false.place(x=1,y=250)
+    
+          
     
           
     
