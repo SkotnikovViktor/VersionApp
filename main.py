@@ -22,35 +22,27 @@ def install_file():
        global out_infomation_install
        # Собираем информации из виджета entry
        information_choose_op = input_name_op.get()
-       # Открвыаем файл с сохранёной информацией об ОП
-       file_save_op = open('information_op.txt','r')
-       file = file_save_op.read()
-       # Открвыаем файл с сохраненым названиями ОП(windows системы)
-       file_op_windows = open('choose_system_windows.txt','r')
-       file_windows = file_op_windows.read()
-       # Открываем файл с сохранёным названиями ОП (linux системы)
-       file_op_linux = open('choose_system_linux.txt','r')
-       file_linux = file_op_linux.read()
-
-       if file_linux in file:
-            print("YES")
-            out_information_install = Label(text=f'Начинаю установку программы для операционной системы: Linux',font='Ubuntu');out_information_install.place(x=1,y=250)
+       # Убираем лишние пробелы в ведёном название операционной системы
+       information_choose_op = information_choose_op.replace(' ','')
+       # Создаём список с навзанием опреационных систем по типу windows
+       choose_windows_system = ['Windows10','windows10','Windows7','windows7','Windows8','windows8']
+       # Создаём список с навзанием опреационных систем по типу linux
+       choose_linux_system= ['LinuxMint','linuxmint','linux','Linux','LinuxUbuntu','linuxubuntu']
+ 
+        # Проверяем есть в ведёной строчке операционная с названием linux и так далее
+       if information_choose_op in choose_linux_system:
+            # Вывод текста об установке, программы для linux систем
+            out_information_install = Label(text=f'Начинаю установку программы для операционной системы: {information_choose_op}',font='Ubuntu',fg='green');out_information_install.place(x=1,y=250)
+            #wget.download('https://drive.google.com/file/d/1VeukkuOYLjaci5JRMca64TRxfClrllxS/view?usp=sharing')
+        # Проверка есть ли совпадания в списке и введёных данных от пользователя
+       elif information_choose_op in choose_windows_system:
+            # Выводим текст об установке программы для windows систем
+            out_information_install = Label(text=f'Начинаю установку программы для операционной системы: {information_choose_op}',font='Ubuntu',fg='green');out_information_install.place(x=1,y=250)
             #wget.download('https://drive.google.com/file/d/1VeukkuOYLjaci5JRMca64TRxfClrllxS/view?usp=sharing')
 
-       elif file_windows in file:
-            out_information_install = Label(text=f'Начинаю установку программы для операционной системы: Windows',font='Ubuntu');out_information_install.place(x=1,y=250)
-            #wget.download('https://drive.google.com/file/d/1VeukkuOYLjaci5JRMca64TRxfClrllxS/view?usp=sharing')
-
-
+        # Исключение если пользователь ввёл не то, что нужно или неправильно написал название ОП
        else:
-           print("NO")
-           out_infomation_false = Label(text='Такой системы нет!',font='Ubuntu');out_infomation_false.place(x=1,y=250)
-    
-          
-    
-          
-    
-
+           out_infomation_false = Label(text='Такой системы нет! Проверьте написание!',font='Ubuntu',fg='red',underline=0);out_infomation_false.place(x=1,y=250)
 #### Конец функции
 
 
