@@ -1,1 +1,1 @@
-Windows10
+LinuxMint
