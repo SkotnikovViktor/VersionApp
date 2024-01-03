@@ -30,7 +30,7 @@ def start(message):
     bot.send_message(message.chat.id, 'Здравствуйте, {0.first_name}!'.format(message.from_user), reply_markup=markup)
 
 
-# Обработка сообщений пользователя
+# Обработка сообщений пользователя/
 @bot.message_handler(content_types=['text'])
 # Функция по обработке сообщений ползователя
 def bot_message(message):
