@@ -1,0 +1,164 @@
+# !Бот, а также приложение находиться в разработке, и может работать не правильно или вообще не работать!
+# !Данный файл не может работать один(в разрешение .py), если будете запускать его в .py файле то обязательно нужно взять файл function.py!
+# Импорт нужных библиотек для работы
+import getpass
+import os
+from pathlib import Path
+from ctypes import *
+import ctypes
+import subprocess
+import sys
+import webbrowser
+import time
+from telebot import *
+from os import remove
+from time import *
+from datetime import datetime
+from datetime import *
+from PIL import Image
+import easygui as e
+import getpass
+from os import *
+
+# Пока не точно(нвр нужно будет убрать! И надо закинуть в файл apps.py(apps.exe))
+# Запуск приложения от имени админа
+# if not ctypes.windll.shell32.IsUserAnAdmin():
+#    print("not an admin, restarting...")
+#    subprocess.run(["launcher.exe", sys.executable, *sys.argv])
+# else:
+#    print("I'm an admin now.")
+
+# Создание Папок, Файлов для отслежки информации
+# Path("C:/Program Files/PersonControle").mkdir(parents=True, exist_ok=True)
+# os.path.isfile(r'C:/Program Files/PersonControle/false.txt')
+# os.path.isfile(r'C:/Program Files/PersonControle/token.txt')
+# file_false = open('C:/Program Files/PersonControle/false.txt','w')
+# file_false.write('0')
+# file_token = open('C:/Program Files/PersonControle/token.txt','w')
+# file_false.close()
+# file_token.close()
+
+
+# Создание файла .bat для автозапуска приложения (при запуске Пк)
+USER_NAME = getpass.getuser()
+
+
+def add_to_startup(file_path="C:/Program Files/PersonControle/main_bot.exe"):
+    if file_path == "":
+        file_path = os.path.dirname(os.path.realpath(__file__))
+    bat_path = r'C:\Users\%s/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup' % USER_NAME
+    with open(bat_path + '\\' + "open.bat", "w") as bat_file:
+        bat_file.write(r'start "" "%s"' % file_path)
+
+add_to_startup()
+bot = telebot.TeleBot('6445792868:AAF2UZH9RdZvgvdaRFdGkPPFy7sqORd_5UU')
+
+
+# Основной код БОТА, а также кнопка "start"
+@bot.message_handler(commands=['start'])
+# Создание кнопок для быстрого функционала в боте
+def start(message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    item1 = types.KeyboardButton('Выключить ПК!')
+    item2 = types.KeyboardButton('Открыть PyCharm!')
+    item3 = types.KeyboardButton('Открыть SublimeText!')
+    item4 = types.KeyboardButton('Открыть Yandex!')
+    item6 = types.KeyboardButton('Точное время!')
+    item7 = types.KeyboardButton('Перезагрузить ПК!')
+    item8 = types.KeyboardButton('Ввести ПК в спящий режим!')
+    item9 = types.KeyboardButton('Курс Доллара$.')
+    item10 = types.KeyboardButton('Курс Евро€.')
+    item11 = types.KeyboardButton('Открой мне Arizona')
+    item12 = types.KeyboardButton('Курс Рубля₽.')
+    item13 = types.KeyboardButton('Скриншот экрана.')
+    item5 = types.KeyboardButton('Ничего, не нужно.')
+    markup.add(item1, item2, item3, item4, item11, item6, item7, item8, item9, item10, item12, item5, item13)
+    bot.send_message(message.chat.id, 'Здравствуйте, {0.first_name}!'.format(message.from_user), reply_markup=markup)
+
+
+# Обработка сообщений пользователя
+@bot.message_handler(content_types=['text'])
+# Функция по обработке сообщений ползователя
+def bot_message(message):
+    if message.chat.type == 'private':
+        if message.text == 'Выключить ПК!':
+            # Вызываем функцию для выключения ПК!
+
+            # Делаем тайм-аут, для того, чтобы ожидать пока завершиться сеанс в течении 1 минуты
+
+            # Отправляем сообщение пользователю о том,что его ПК был выключен!
+            bot.send_message(message.chat.id,
+                             'Ваш, ПК был успешно выключен! Можете спать спокойно, за вами следит мальенький БетМен<3!')
+
+        elif message.text == 'Открыть PyCharm!':
+            # Вызываем функцию для открытия приложения (PyCharm)
+
+            # Отправляем сообщение пользователю о выолненой работе открытие приложения
+            bot.send_message(message.chat.id, 'Сделано!')
+        elif message.text == 'Открыть SublimeText!':
+            # Вызываем функцию для открытия приложения (SublimeText)
+
+            # Отправляем сообщение пользователю о выполненой работе, по открытию приложения
+            bot.send_message(message.chat.id, 'Сделано! Приятного программирования!')
+
+        elif message.text == 'Ничего, не нужно.':
+            bot.send_message(message.chat.id, 'Хорошо, буду ждать ваших комманд! Если, что я всегда готов!')
+
+        elif message.text == "Открыть Yandex!":
+
+            bot.send_message(message.chat.id, 'Сделано! Приятного сёрфинга в интернете!')
+
+        elif message.text == 'Точное время!':
+            now = datetime.datetime.now()
+            current_time = now.strftime("%H:%M:%S")
+            bot.send_message(message.chat.id, current_time)
+            bot.send_message(message.chat.id,
+                             'Ловите точное время, по МСК! Никогда не опаздывайте, тем более к близким они вас любят<3!')
+
+        elif message.text == 'Ввести ПК в спящий режим!':
+            bot.send_message(message.chat.id,
+                             'ПК был введён с спящий режим! Можете не беспокоиться я его буду охранять!')
+            sleep(5)
+
+
+        elif message.text == 'Скриншот экрана.':
+
+            img = Image.open('screenshot.png')
+            bot.send_message(message.chat.id,
+                             'Опа! Ловите скрин, но только давайте договримся, вы меня не знаете, а я вас. Удачи<3')
+            bot.send_message(message.chat.id, 'Извините за плохое качество! Это проблема теллеграма!)')
+            bot.send_photo(message.chat.id, img)
+            sleep(2)
+            remove('screenshot.png')
+        elif message.text == 'Перезагрузить ПК!':
+            bot.send_message(message.chat.id, 'Происходит перезагрузка ПК! Ожидайте в течении 1 минуту!')
+
+        elif message.text == 'Курс Рубля₽.':
+
+            bot.send_message(message.chat.id,
+                             'Ловите свежий курс Рубля! И будьте всегда вкурсе валют, вместе со мной<3')
+            bot.send_message(message.chat.id, 'Источник Google.com')
+
+        elif message.text == 'Курс Доллара$.':
+            bot.send_message(message.chat.id,
+                             'Ловите свежий курс Доллара! И будьте всегда в курсе валют, вместе со мной<3')
+
+            bot.send_message(message.chat.id, 'Источник Google.com')
+
+        elif message.text == 'Курс Евро€.':
+            bot.send_message(message.chat.id,
+                             'Ловите свежий курс Евро! И будьте всегда в курсе валют, вместе со мной<3')
+
+            bot.send_message(message.chat.id, 'Источник Google.com')
+
+
+        elif message.text == 'Открой мне Arizona':
+            bot.send_message(message.chat.id, 'Сделано! Приятной игры! И всегда будьте спокойны<3')
+
+
+        else:
+            bot.send_message(message.chat.id, 'Я вас не понял, может вы имели, что-то другое.')
+
+
+# Запускаем вечный цикл, дабы бот работал всё время без остановки.
+bot.polling(none_stop=True)
