@@ -15,8 +15,8 @@ def start(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     item1 = types.KeyboardButton('Выключить ПК!')
     item2 = types.KeyboardButton('Скриншот экрана!')
-    item3 = types.KeyboardButton('Включить КонтрольБраузера')
-    item4 = types.KeyboardButton('Выключить КонтрольБраузера')
+    item3 = types.KeyboardButton('Запустить КонтрольБраузера для добавления сайта.')
+    item4 = types.KeyboardButton('Запустить КонтрольБраузера для удаления сайта.')
     item6 = types.KeyboardButton('Показать список процессов на ПК!')
     item7 = types.KeyboardButton('Перезагрузить ПК!')
     item8 = types.KeyboardButton('Ввести ПК в спящий режим!')
@@ -30,7 +30,7 @@ def start(message):
     bot.send_message(message.chat.id, 'Здравствуйте, {0.first_name}!'.format(message.from_user), reply_markup=markup)
 
 
-# Обработка сообщений пользователя/
+# Обработка сообщений пользователя
 @bot.message_handler(content_types=['text'])
 # Функция по обработке сообщений ползователя
 def bot_message(message):
@@ -53,4 +53,6 @@ def bot_message(message):
             process_enter = process.read()
             bot.send_message(message.chat.id,process_enter)
             process.close()
+        elif message.text == 'Запустить КонтрольБраузера для добавления сайта.':
+            os.startfile(r'controlebrow\main_controle.py')
 bot.polling(non_stop=True)
