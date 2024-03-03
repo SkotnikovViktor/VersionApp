@@ -1,16 +1,17 @@
-import time
 from datetime import *
 import time
+from uptime import *
+
+
 
 k = 0
 
-
-
 datetime.today()
+## Узнаём день недели
 todayday = datetime.today().weekday()
-print(type(todayday))
 
-# 0 - понедельник
+
+## 0 - понедельник
 # 1 - вторник
 # 2 - среда
 # 3 - четверг
@@ -19,31 +20,41 @@ print(type(todayday))
 # 6 - воскресенье
 
 while True:
-    k+=1
-    print(k)
-    time.sleep(0.9)
+    today = uptime()
+    time.sleep(1)
+    today = int(today)
+    print(today)
+    print(type(today))
     if todayday == 0:
-        mon = open('monday.txt','w')
-        mon.write(str(k))
+        mon = open('monday.txt','r+')
+        mon.write(str(today))
+        mon.close()
     elif todayday == 1:
-        tue = open('tuesday.txt','w')
-        tue.write(str(k))
+        tue = open('tuesday.txt','r+')
+        tue.write(str(today))
+        tue.close()
     elif todayday == 2:
-        wed = open('wednesday.txt','w')
-        wed.write(str(k))
+        wed = open('wednesday.txt','r+')
+        wed.write(str(today))
+        wed.close()
     elif todayday==3:
-        thu = open('thursday.txt','w')
-        thu.write(str(k))
+        thu = open('thursday.txt','r+')
+        thu.write(str(today))
+        thu.close()
     elif todayday == 4:
-        fri = open('friday.txt','w')
-        fri.write(str(k))
-
+        fri = open('friday.txt','r+')
+        fri.write(str(today))
+        fri.close()
     elif todayday==5:
-        thu = open('thursday .txt','w')
-        thu.write(str(k))
+        sat = open('saturday.txt','r+')
+        sat.write(str(today))
+        sat.close()
     elif todayday == 6:
-        sun = open('sunday.txt','w')
-        sun.write(str(k))
+        sun = open('sunday.txt','r+')
+        sun.write(str(today))
+        sun.close()
+
+
 
 
 
