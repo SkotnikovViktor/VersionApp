@@ -10,6 +10,7 @@ import psutil
 from PIL import Image, ImageDraw, ImageFont
 import datetime
 import wikipedia
+from autocorrect import Speller
 
 # Создание нужный папок и файлов перед запуском
 try:
@@ -17,6 +18,11 @@ try:
     os.mkdir("autocreensave")
 except:
     pass
+
+
+
+
+
 
 
 
@@ -81,7 +87,7 @@ check_main_pr(pros())
 bot = telebot.TeleBot('6807355463:AAHsqByvpAwM2FCBuT-44hcGJ6sl1IZCZBM')
 
 
-@bot.message_handler(commands=['start'])
+@bot.message_handler(commands=['старт'])
 # Создание кнопок для быстрого функционала в боте
 def start(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -113,6 +119,7 @@ def answer(call):
         off_klav = open('processlog.txt','a')
         off_klav.write(str(timing)+' Отключение клавиатуры, user_id }.\n')
         off_klav.close()
+
 
 
 
@@ -242,6 +249,7 @@ def answer(call):
     elif call.data == 'Программа блокировки сайтов.':
         def start_block_file(adres):
 
+            timing = datetime.datetime.now()
             new = open('processlog.txt', 'a')
             new.write(str(timing) + f' Запуск программы блокировки сайта: {adres.text}')
             new.close()
@@ -251,7 +259,7 @@ def answer(call):
             file_block_site.close()
             # os.system(r'controle_key.py')
             time.sleep(5)
-            os.system('main_controle.exe')
+            os.startfile('main_controle.exe')
             bot.send_message(call.message.chat.id, 'Успешно.')
 
         name_site = bot.send_message(call.message.chat.id, 'Введите назввание сайта для блокировки ниже:')
@@ -265,6 +273,7 @@ def answer(call):
     elif call.data == 'Программа разблокировки сайтов.':
         def start_unblock_file(adres):
 
+            timing = datetime.datetime.now()
             new = open('processlog.txt', 'a')
             new.write(str(timing) + f' Запуск програмы разблокировки сайтов: {adres.text}')
             new.close()
@@ -273,7 +282,7 @@ def answer(call):
             file_block_site.write(adres.text)
             file_block_site.close()
             time.sleep(5)
-            os.system('programm_clean_list_site.exe')
+            os.startfile('programm_clean_list_site.exe')
             bot.send_message(call.message.chat.id, 'Успешно.')
             block = open('processlog.txt', 'a')
             block.write(str(timing) + f' Попытка блокировки сайта: {adres.text}')
@@ -665,8 +674,11 @@ def answer(call):
 
 
 
+        now_how_time = open('timeauto.txt','r')
+        how_now = now_how_time.read()
 
-        choose_time = bot.send_message(call.message.chat.id,'Введите время промежутка в сек:\nПо умолчанию промежуток равен 60 секундам.')
+        choose_time = bot.send_message(call.message.chat.id,f'Введите время промежутка в сек:\nПо умолчанию промежуток равен 60 секундам.\nСейчас промежуток равен: {how_now}')
+        now_how_time.close()
         bot.register_next_step_handler(choose_time, write_time_auto)
 
 
@@ -905,10 +917,14 @@ def bot_message(message):
             key_bot.add(but3)
             #key_bot.add(but_bit_installer)
             key_bot.add(but_time_auto)
+
             bot.send_message(message.chat.id, 'Настройки бота:', reply_markup=key_bot)
 
 
 
+#      spelling = Speller(lang='ru')
+ #       elif  spelling(message.text) in big_list:
+  #          pass
 
 
 
