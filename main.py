@@ -72,8 +72,9 @@ def check_main_pr(process):
 
     if  'update.exe' in process:
         pass
+
+
     else:
-        print('Попал сюды')
         os.startfile('update.exe')
 
 check_main_pr(pros())
@@ -377,24 +378,25 @@ def answer(call):
         bot.send_message(call.message.chat.id, 'Введите координаты через пробел.')
         pos = bot.send_message(call.message.chat.id, 'Пример ввода: 500 500')
 
-        def move_to(xy):
-            xy = xy.text.split()
+        def move_to(how_move):
+            how_move = how_move.text.split()
             try:
-                pyautogui.moveTo(int(xy[0]), int(xy[1]))
+                pyautogui.moveTo(int(how_move[0]), int(how_move[1]))
                 bot.send_message(call.message.chat.id, 'Выполнено.')
 
                 new = open('processlog.txt', 'a')
-                new.write(str(timing) + f' Перемещение успешное: {xy}\n')
+                new.write(str(timing) + f' Перемещение успешное: {how_move}\n')
                 new.close()
 
             except:
                 bot.send_message(call.message.chat.id, 'Проверьте правильность ввода координат.\n')
 
                 new = open('processlog.txt', 'a')
-                new.write(str(timing) + f' Перемещение курсора ошибка:{xy}')
+                new.write(str(timing) + f' Перемещение курсора ошибка:{how_move}')
                 new.close()
 
         bot.register_next_step_handler(pos, move_to)
+
 
 
 
@@ -422,7 +424,7 @@ def answer(call):
                 with open(src, 'wb') as new_file:
                     new_file.write(downloaded_file)
 
-                bot.reply_to(message,    f"Сохранено!\nВы можете найти данный фалй по пути\nC:/Users/Public/Documents/DownloadBot/{message.document.file_name} ")
+                bot.reply_to(message,    f"Сохранено!\nВы можете найти данный файл по пути\nC:/Users/Public/Documents/DownloadBot/{message.document.file_name} ")
             except:
                 timing = datetime.datetime.now()
                 send_photo_user = open('processlog.txt', 'a')
@@ -609,7 +611,7 @@ def answer(call):
             for_write.close()
 
             start_file = open('processlog.txt', 'a')
-            start_file.write(str(timing) + ' Флаг функции вто-скрин был изменён на: off.\n')
+            start_file.write(str(timing) + ' Флаг функции авто-скрин был изменён на: off.\n')
             start_file.close()
 
 
@@ -677,7 +679,7 @@ def answer(call):
         now_how_time = open('timeauto.txt','r')
         how_now = now_how_time.read()
 
-        choose_time = bot.send_message(call.message.chat.id,f'Введите время промежутка в сек:\nПо умолчанию промежуток равен 60 секундам.\nСейчас промежуток равен: {how_now}')
+        choose_time = bot.send_message(call.message.chat.id,f'Введите время промежутка в сек:\nПо умолчанию промежуток равен 60 секундам.\nСейчас промежуток равен: {how_now} сек.')
         now_how_time.close()
         bot.register_next_step_handler(choose_time, write_time_auto)
 
