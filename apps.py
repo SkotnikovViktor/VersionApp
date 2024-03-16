@@ -1,101 +1,83 @@
-## Импорт библиотек для работы самого кода
-## Импорт tkinter для создание интерфейса приложения
-#from tkinter import *
-## Импорт библиотеки для загрузки файлов
-#
-## Создание переменных
-#check_watch_button = 0
-#
-## Создание окна:
-## Создаём переменную windows и присваиваем ей метод по созданию окна Tk()
-#windows = Tk()
-## Стави флашки на запрет, измменения геометри окна
-#windows.resizable(width=False,height=False)
-## Указываем размеры окна по x и y
-#windows.geometry('680x500')
-## Даём название нашему окну и всему главному приложению
-#windows.title('Настройки')
-#
-#
-##### Начало функции по установке версии файла
-#def install_file():
-#       global out_infomation_install
-#       # Собираем информации из виджета entry
-#       information_choose_op = input_name_op.get()
-#       # Убираем лишние пробелы в ведёном название операционной системы
-#       information_choose_op = information_choose_op.replace(' ','')
-#       # Создаём список с навзанием опреационных систем по типу windows
-#       choose_windows_system = ['Windows10','windows10','Windows7','windows7','Windows8','windows8']
-#       # Создаём список с навзанием опреационных систем по типу linux
-#       choose_linux_system= ['LinuxMint','linuxmint','linux','Linux','LinuxUbuntu','linuxubuntu']
-#
-#        # Проверяем есть в ведёной строчке операционная с названием linux и так далее
-#       if information_choose_op in choose_linux_system:
-#            # Вывод текста об установке, программы для linux систем
-#            out_information_install = Label(text=f'Начинаю установку программы для операционной системы: {information_choose_op}',font='Ubuntu',fg='green');out_information_install.place(x=1,y=250)
-#            #wget.download('https://drive.google.com/file/d/1VeukkuOYLjaci5JRMca64TRxfClrllxS/view?usp=sharing')
-#        # Проверка есть ли совпадания в списке и введёных данных от пользователя
-#       elif information_choose_op in choose_windows_system:
-#            # Выводим текст об установке программы для windows систем
-#            out_information_install = Label(text=f'Начинаю установку программы для операционной системы: {information_choose_op}',font='Ubuntu',fg='green');out_information_install.place(x=1,y=250)
-#            #wget.download('https://drive.google.com/file/d/1VeukkuOYLjaci5JRMca64TRxfClrllxS/view?usp=sharing')
-#
-#        # Исключение если пользователь ввёл не то, что нужно или неправильно написал название ОП
-#       else:
-#           out_infomation_false = Label(text='Такой системы нет! Проверьте написание!',font='Ubuntu',fg='red',underline=0);out_infomation_false.place(x=1,y=250)
-##### Конец функции
-#
-#
-#
-#
-## Здесь создаётся функция по сохранению информации об операционной системы пользователя
-#### Начало функции
-#def save_op():
-#    # Объявляем глобальную переменную name_op
-#    global name_op,check_watch_button
-#    # Создана переменная name_op для того, чтобы принять информацию об введёном ОП пользователя
-#    name_op = input_name_op.get()
-#    if len(name_op)==0:
-#           label_save= Label(text='Введите название ОП!',fg = 'red',underline=0);label_save.place(x=340,y=62)
-#    else:
-#        if check_watch_button==1:
-#                label_save= Label(text='Изменения сохранены!',fg = 'green',underline=0);label_save.place(x=340,y=62)
-#                # Создаём кнопку для установки программы для введёной ОП, а также проверяем отступ
-#                button_install_program = Button(text=f'Установить программу для: {name_op}',underline=0,command=install_file);button_install_program.place(x=400-len(name_op)*3,y=465)
-#                # Сохраняем эту информацию в файл с флагом "w" если файл нету, то создаётся новый, а если есть то файл перезаписываеться
-#                file_op = open('information_op.txt','w')
-#                # Записываем эту информацию в файл, и убираем все пробелы методом replace
-#                file_op.write(name_op.replace(' ',''))
-#        else:
-#            label_save = Label(text='Сохранено!',fg='green',underline=0);label_save.place(x=390,y=64)
-#            # Создаём кнопку для установки программы для введёной ОП, а также проверяем отступ
-#            button_install_program = Button(text=f'Установить программу для: {name_op}',underline=0,command=install_file);button_install_program.place(x=400-len(name_op)*3,y=465)
-#            # Сохраняем эту информацию в файл с флагом "w" если файл нету, то создаётся новый, а если есть то файл перезаписываеться
-#            file_op = open('information_op.txt','w')
-#            # Записываем эту информацию в файл, и убираем все пробелы методом replace
-#            file_op.write(name_op.replace(' ',''))
-#    check_watch_button = 1
-#    return name_op
-#    #### Конец функции
-#
-#
-#
-#
-## Создаём текстовое поле, с текстом "Напишите полное название вашей ОП"
-#text_PO = Label(text='Напишите полное название вашей операционной системы:',font='Ubuntu',underline=0);text_PO.place(x=1,y=0)
-## Создаём текстовое поле, с примеро ввода текста
-#text_PO_primer = Label(text='Например: Linux, Windows 7-11.',font='Ubuntu',underline=10);text_PO_primer.place(x=1,y=35)
-## Создаем поле для ввода текста с название ОП
-#input_name_op = Entry(text = 'Введите название ПО:',font='Ubuntu',foreground='black',width=35);input_name_op.place(x=1,y=60)
-## Создаем кнопку для сохранения, названия ОП, наследует функция save_op
-#button_save = Button(underline=0,text='Сохранить название операционной системы.',command=save_op);button_save.place(x=1,y=90)
-#
-#
-#
-## Создание вечного цикла, для работы приложения
-#windows.mainloop()
+from tkinter import *
+import os
+import getpass
 
-a = "5555"
-a = float(a)
-print(a)
-print(type(a))
+
+
+
+
+def save_token():
+    global con4
+    token = con4.get()
+    if len(token)==0:
+        war = Label(text = 'Ошибка введите токен.').place(x=15,y=385)
+    else:
+        try:
+            f = open('token.txt','w')
+            f.truncate(0)
+            f.write(token)
+            f.close()
+            ff = open('token_status.txt','w')
+            ff.truncate(0)
+            ff.write('1')
+            ff.close()
+            con6 = Label(text='ВНИМАНИЕ!').place(x=0, y=390)
+            con7 = Label(text='Теперь чтобы использовать бота перейдите по ссылке (самая первая, которая начинается на "t.me") и перезагрузите компьютер.').place(x=0,y=410)
+            con8 = Label(text = 'Перезагрузить компьютер?').place(x=0,y=430)
+            def rest():
+
+                os.system("shutdown /r /t 1")
+
+            but_yes_rest = Button(text = 'Да.',width=8,command=rest).place(x=0,y=455)
+            but_no_rest = Button(text='Нет.',width=8).place(x=70,y=455)
+
+        except:
+            war = Label(text='Ошибка введите токен.').place(x=15, y=385)
+
+
+
+
+
+window = Tk()
+window.title("Настройка и подключение бота.")
+window.geometry("850x550")
+window.resizable(False,False)
+window.iconbitmap('Settings.ico')
+
+
+image = PhotoImage(file="BotFather.png")
+lab_oq = Label(text='OR-код на BotFather:').place(x=444,y=0)
+label = Label(image=image).place(x=444,y=20)
+
+photo_token = PhotoImage(file="SeeToken.png")
+photo_see_token = Label(text='Вид токена:').place(x=490,y=260)
+lb = Label(image=photo_token).place(x=490,y=280)
+
+
+
+lab = Label(text = 'Начнём настройку:').place(x=0,y=0)
+lab1 = Label(text = '1) Откройте приложение "Telegram" на ПК или смартфоне.').place(x=5,y=20)
+lab2 = Label(text = '2) В поиске наберите "@BotFather" и создайте чат.').place(x=5,y=40)
+lab3 = Label(text = '3) В открывшемся чате введите команду "/newbot" ').place(x=5,y=60)
+lab4 = Label(text = '4) Далее введите название вашего бота. Оно может быть любое.').place(x=5,y=80)
+lab5 = Label(text = '5) Теперь давайте придумем username бота.').place(x=5,y=100)
+lab6 = Label(text = 'Примечание: username должен оканчиваться на "bot"').place(x=10,y=120)
+lab7 = Label(text = '6) Отлично вы успешно создали бота!').place(x=5,y=140)
+
+
+con = Label(text = 'Подключение бота:').place(x=0,y=250)
+con1 = Label(text = '1) Сгенирированный токен (тёмно-синий текст, чёрный на смартфоне) скопируйте.');con1.place(x=10,y=270)
+con2 = Label(text = '2) Вставьте скопированный текст ниже и переключитесь на "en" раскладку.');con2.place(x=10,y=290)
+con3 = Label(text = '3) И нажмите кнопку "Сохранить токен". И следуйте дальнейшим инструкциям.');con3.place(x=10,y=310)
+con4 = Entry(width=50);con4.place(x=15,y=335)
+
+but = Button(text = 'Сохранить токен.',command=save_token);but.place(x=15,y=360)
+
+
+
+
+
+
+
+
+window.mainloop()

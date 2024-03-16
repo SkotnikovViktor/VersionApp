@@ -10,7 +10,12 @@ import psutil
 from PIL import Image, ImageDraw, ImageFont
 import datetime
 import wikipedia
-from autocorrect import Speller
+
+
+
+
+
+
 
 # Создание нужный папок и файлов перед запуском
 try:
@@ -80,15 +85,27 @@ def check_main_pr(process):
 check_main_pr(pros())
 
 
+ff = open('token_status.txt','r')
+ff = int(ff.read())
+
+if ff==0:
+    os.startfile('apps.exe')
+else:
+    pass
+
+
 
 
 
 
 # Сохранение токена в перемпенную
-bot = telebot.TeleBot('6807355463:AAHsqByvpAwM2FCBuT-44hcGJ6sl1IZCZBM')
+f = open('token.txt','r')
+token = f.read()
+bot = telebot.TeleBot(token)
+f.close()
 
 
-@bot.message_handler(commands=['старт'])
+@bot.message_handler(commands=['старт'] or ['start'])
 # Создание кнопок для быстрого функционала в боте
 def start(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -424,7 +441,7 @@ def answer(call):
                 with open(src, 'wb') as new_file:
                     new_file.write(downloaded_file)
 
-                bot.reply_to(message,    f"Сохранено!\nВы можете найти данный файл по пути\nC:/Users/Public/Documents/DownloadBot/{message.document.file_name} ")
+                bot.reply_to(message,    f"Сохранено!\nВы можете найти данный файл по пути\t\tC:/Users/Public/Documents/DownloadBot/{message.document.file_name} ")
             except:
                 timing = datetime.datetime.now()
                 send_photo_user = open('processlog.txt', 'a')
@@ -515,20 +532,27 @@ def answer(call):
     elif call.data == 'Скриншот с текстом.':
         timing = datetime.datetime.now()
         def write_text_on_screen(text_on_screen):
+
+            text_on_screen = text_on_screen.text.split()
+
             timing = datetime.datetime.now()
+
             start_file = open('processlog.txt', 'a')
-            start_file.write(str(timing) + f' Запрос на скриншот с текстом: {text_on_screen.text}\n')
+            start_file.write(str(timing) + f' Запрос на скриншот с текстом: {text_on_screen[0]}\n')
             start_file.close()
 
+            bot.send_message(call.message.chat.id, 'Скриншот будет сделан через 5 сек.')
+            time.sleep(5)
+
             os.startfile('screen.exe')
-            time.sleep(3)
             bot.send_message(call.message.chat.id, 'Скриншот сделан, ожидайте его обработки...')
             time.sleep(10)
             image = Image.open("screenshot.png")
-            font = ImageFont.truetype("arial.ttf", 26)
+            font = ImageFont.truetype("arial.ttf",int(text_on_screen[-1]))
             drawer = ImageDraw.Draw(image)
+
             try:
-                drawer.text((10, 10), text_on_screen.text, font=font, fill='white')
+                drawer.text((int(text_on_screen[1]), int(text_on_screen[2])), text_on_screen[0], font=font, fill='white')
                 image.save('screenshottext.png')
                 time.sleep(15)
                 file_text = open('screenshottext.png', 'rb+')
@@ -538,19 +562,18 @@ def answer(call):
                 time.sleep(3)
                 os.remove('screenshottext.png')
                 os.remove('screenshot.png')
-
                 timing = datetime.datetime.now()
                 start_file = open('processlog.txt', 'a')
-                start_file.write(str(timing) + f' Скриншот отправлен с текстом:{text_on_screen.text}\n')
+                start_file.write(str(timing) + f' Скриншот отправлен с текстом:{text_on_screen[0]}\n')
                 start_file.close()
             except:
-                bot.send_message(call.message.chat.id, 'Ошибка. Повторите попытку.')
+                bot.send_message(call.message.chat.id, 'Ошибка. Проверьте правильность и целосность введёных данных.')
                 timing = datetime.datetime.now()
                 start_file = open('processlog.txt', 'a')
                 start_file.write(str(timing) + ' Ошибка, отправки скриншота с текстом.\n')
                 start_file.close()
 
-        name_text = bot.send_message(call.message.chat.id, 'Введите текст ниже: ')
+        name_text = bot.send_message(call.message.chat.id, 'Введите текст ниже через пробел (Текст Позиция по x и y размер текста)\nНапример: Пример 50 50 25: ')
         bot.register_next_step_handler(name_text, write_text_on_screen)
 
 
@@ -558,7 +581,7 @@ def answer(call):
 
     elif call.data == 'Перезагрузка бота.':
         timing = datetime.datetime.now()
-        bot.send_message(call.message.chat.id, 'Перезагрузка...')
+        bot.send_message(call.message.chat.id, 'Перезагрузка...\nБот возобновит работу через 10 секунд.')
         time.sleep(2)
         os.system(f"taskkill /f /im main.exe")
         os.system(f"taskkill /f /im update.exe")
