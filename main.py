@@ -10,11 +10,22 @@ import psutil
 from PIL import Image, ImageDraw, ImageFont
 import datetime
 import wikipedia
+import getpass
 
 
 
 
+USER_NAME = getpass.getuser()
 
+
+#def add_to_startup(file_path="C:/Program Files/PersonControle/main_bot.exe"):
+#    if file_path == "":
+#        file_path = os.path.dirname(os.path.realpath(__file__))
+#    bat_path = r'C:\Users\%s/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup' % USER_NAME
+#    with open(bat_path + '\\' + "open.vbs", "w") as bat_file:
+#        bat_file.write(f'Set WshShell = CreateObject("WScript.Shell")\nWshShell.Run chr(34) & {file_path} & Chr(34)\nSet WshShell = Nothing')
+#
+#add_to_startup()
 
 
 # Создание нужный папок и файлов перед запуском

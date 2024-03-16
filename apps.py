@@ -1,6 +1,6 @@
 from tkinter import *
 import os
-import getpass
+
 
 
 
@@ -28,8 +28,11 @@ def save_token():
 
                 os.system("shutdown /r /t 1")
 
+            def poki():
+                os.system(f"taskkill /f /im apps.exe")
+
             but_yes_rest = Button(text = 'Да.',width=8,command=rest).place(x=0,y=455)
-            but_no_rest = Button(text='Нет.',width=8).place(x=70,y=455)
+            but_no_rest = Button(text='Нет.',width=8,command=poki).place(x=70,y=455)
 
         except:
             war = Label(text='Ошибка введите токен.').place(x=15, y=385)
@@ -42,7 +45,7 @@ window = Tk()
 window.title("Настройка и подключение бота.")
 window.geometry("850x550")
 window.resizable(False,False)
-window.iconbitmap('Settings.ico')
+window.iconphoto(False, PhotoImage(file='Settings.ico'))
 
 
 image = PhotoImage(file="BotFather.png")
@@ -50,7 +53,7 @@ lab_oq = Label(text='OR-код на BotFather:').place(x=444,y=0)
 label = Label(image=image).place(x=444,y=20)
 
 photo_token = PhotoImage(file="SeeToken.png")
-photo_see_token = Label(text='Вид токена:').place(x=490,y=260)
+photo_see_token = Label(text='Вид токена(пример):').place(x=490,y=260)
 lb = Label(image=photo_token).place(x=490,y=280)
 
 
