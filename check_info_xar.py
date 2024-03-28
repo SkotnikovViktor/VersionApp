@@ -3,8 +3,8 @@ import platform
 
 # Функция по узнаванию имя процессора
 def name_processor():
-    name = platform.processor().split()
-    return  name[0]
+    name = platform.processor()
+    return name
 
 # Узнаём название нашеё ОП системы
 def name_os():

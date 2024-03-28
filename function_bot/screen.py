@@ -1,2 +1,6 @@
 import pyautogui
-screen = pyautogui.screenshot('screenshot.png')
+
+def  doingscreen(adres):
+    screen = pyautogui.screenshot(adres)
+
+doingscreen('screenshot.png')

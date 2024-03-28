@@ -1,5 +1,9 @@
+try:
+    os.system("taskkill /f /im cmd.exe")
+except:
+    pass
 # Импорт библиотек
-# V1.6.3 - Исправлен показ системных процессов, теперь на телефоне работает всё стабильно  и показ. правильно.
+# V1.6.4 - Исправлен показ системных процессов, теперь на телефоне работает всё стабильно  и показ. правильно.
 from telebot import *
 import os
 import time
@@ -11,6 +15,7 @@ from PIL import Image, ImageDraw, ImageFont
 import datetime
 import wikipedia
 import getpass
+import win32con,win32api
 
 
 
@@ -18,14 +23,18 @@ import getpass
 USER_NAME = getpass.getuser()
 
 
-#def add_to_startup(file_path="C:/Program Files/PersonControle/main_bot.exe"):
-#    if file_path == "":
-#        file_path = os.path.dirname(os.path.realpath(__file__))
-#    bat_path = r'C:\Users\%s/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup' % USER_NAME
-#    with open(bat_path + '\\' + "open.vbs", "w") as bat_file:
-#        bat_file.write(f'Set WshShell = CreateObject("WScript.Shell")\nWshShell.Run chr(34) & {file_path} & Chr(34)\nSet WshShell = Nothing')
-#
-#add_to_startup()
+
+
+def add_to_startup(file_path=r"C:\Users\%s/Desktop/App/"%USER_NAME):
+    if file_path == "":
+        file_path = os.path.dirname(os.path.realpath(__file__))
+    bat_path = r'C:\Users\%s/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup' % USER_NAME
+    with open(bat_path + '\\' + "open.bat", "w") as bat_file:
+        bat_file.write(r'cd /d '+file_path)
+        bat_file.write('\nmain.exe')
+
+add_to_startup()
+#win32api.SetFileAttributes(r'C:\Users\%s/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/open.bat'%USER_NAME,win32con.FILE_ATTRIBUTE_HIDDEN)
 
 
 # Создание нужный папок и файлов перед запуском
@@ -116,7 +125,9 @@ bot = telebot.TeleBot(token)
 f.close()
 
 
-@bot.message_handler(commands=['старт'] or ['start'])
+
+
+@bot.message_handler(commands=['старт'])
 # Создание кнопок для быстрого функционала в боте
 def start(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -152,6 +163,7 @@ def answer(call):
 
 
 
+    
     elif call.data == 'Включить клавиатуру.':
         timing = datetime.datetime.now()
         os.system("taskkill /f /im  block_keyboard.exe")
@@ -159,6 +171,15 @@ def answer(call):
         on_klav = open('processlog.txt','a')
         on_klav.write(str(timing)+' Включение клавиатуры.\n')
         on_klav.close()
+
+    elif call.data == 'Выключить через время.':
+        def off_to_time(times):
+
+
+            os.system(f'shutdown -s -f -t {int(times.text)}')
+
+        how_time = bot.send_message(call.message.chat.id,'Введите время в секундах:')
+        bot.register_next_step_handler(how_time,off_to_time)
 
 
 
@@ -246,13 +267,16 @@ def answer(call):
 
     elif call.data == 'Системные процессы.':
         def check_proc_for(ret):
+            global count
             s = []
             s_specail = []
             processes = psutil.process_iter()
+            count = 0
             for process in processes:
                 if process.name() != 'svchost.exe' and process.name() != 'System Idle Process' and process.name() != 'System' and process.name() != 'Registry':
                     s.append(process.name()+ ret)
                     s_specail.append(process.name())
+                    count+=1
 
             return s
 
@@ -268,7 +292,7 @@ def answer(call):
         check.write(str(timing)+' Запрос вывода системных процессов.\n')
         check.close()
 
-        bot.send_message(call.message.chat.id, f'Список процессов на вашем компьтере.\nВсего процессов: {len(spis_chet)}')
+        bot.send_message(call.message.chat.id, f'Список процессов на вашем компьтере.\nВсего процессов: {count}')
 
 
 
@@ -289,6 +313,8 @@ def answer(call):
             # os.system(r'controle_key.py')
             time.sleep(5)
             os.startfile('main_controle.exe')
+            #os.system("taskkill /f /im browser.exe")
+
             bot.send_message(call.message.chat.id, 'Успешно.')
 
         name_site = bot.send_message(call.message.chat.id, 'Введите назввание сайта для блокировки ниже:')
@@ -343,7 +369,7 @@ def answer(call):
 
 
         if  'block_keyboard.exe' not in process and  'block_mouse.exe' not in process:
-            screen_small_time(15,'Быстрый')
+            screen_small_time(10,'Быстрый')
 
 
         elif  'block_keyboard.exe' in process or 'block_mouse.exe' in process:
@@ -352,15 +378,15 @@ def answer(call):
 
 
     elif call.data == 'Название компьютера.':
-        bot.send_message(call.message.chat.id, 'Название вашего компьютера.')
+        bot.send_message(call.message.chat.id, 'Название вашего компьютера:')
         bot.send_message(call.message.chat.id, check_info_xar.name_pc())
 
     elif call.data == 'Название процессора.':
-        bot.send_message(call.message.chat.id, 'Название вашего процессора.')
+        bot.send_message(call.message.chat.id, 'Название вашего процессора:')
         bot.send_message(call.message.chat.id, check_info_xar.name_processor())
 
     elif call.data == 'Название операционной системы.':
-        bot.send_message(call.message.chat.id, 'Название операционной системы.')
+        bot.send_message(call.message.chat.id, 'Название операционной системы:')
         bot.send_message(call.message.chat.id, check_info_xar.name_os())
 
 
@@ -377,19 +403,21 @@ def answer(call):
 
         def send_photo(adres):
             timing = datetime.datetime.now()
+            send_photo_user = open('processlog.txt', 'a')
+            send_photo_user.write(str(timing) + ' Файл был успешно отправлен.\n')
+            send_photo_user.close()
+            
             try:
-                send_photo_user = open('processlog.txt', 'a')
-                send_photo_user.write(str(timing) + ' Фото было успешно отправлено.\n')
-                send_photo_user.close()
-
-                photo = open(adres.text, 'rb')
-                bot.send_photo(call.message.chat.id, photo)
-                photo.close()
+                adres = adres.text
+                file = open(adres,'rb')
+                bot.send_document(call.message.chat.id, file)
+                file.close()
+            
 
             except:
                 bot.send_message(call.message.chat.id,'Произошла ошибка, повторите попытку. \n*Неверно указан путь до файла.')
                 send_photo_user = open('processlog.txt', 'a')
-                send_photo_user.write(str(timing) + ' Ошибка, указан неверный путь до файла.\n')
+                send_photo_user.write(str(timing) + ' Ошибка, указан неверный путь до файла.\n')                
                 send_photo_user.close()
 
         bot.register_next_step_handler(adres_gallery, send_photo)
@@ -408,6 +436,7 @@ def answer(call):
 
         def move_to(how_move):
             how_move = how_move.text.split()
+            
             try:
                 pyautogui.moveTo(int(how_move[0]), int(how_move[1]))
                 bot.send_message(call.message.chat.id, 'Выполнено.')
@@ -563,7 +592,7 @@ def answer(call):
             drawer = ImageDraw.Draw(image)
 
             try:
-                drawer.text((int(text_on_screen[1]), int(text_on_screen[2])), text_on_screen[0], font=font, fill='white')
+                drawer.text((int(text_on_screen[1]), int(text_on_screen[2])), text_on_screen[0], font=font, fill='gray')
                 image.save('screenshottext.png')
                 time.sleep(15)
                 file_text = open('screenshottext.png', 'rb+')
@@ -592,6 +621,8 @@ def answer(call):
 
     elif call.data == 'Перезагрузка бота.':
         timing = datetime.datetime.now()
+
+
         bot.send_message(call.message.chat.id, 'Перезагрузка...\nБот возобновит работу через 10 секунд.')
         time.sleep(2)
         os.system(f"taskkill /f /im main.exe")
@@ -616,7 +647,7 @@ def answer(call):
             new.close()
             bot.send_message(call.message.chat.id,'Успешно.')
         except:
-            bot.send_message(call.message.chat.id, 'Ошибка, очистки кэша')
+            #bot.send_message(call.message.chat.id, 'Ошибка, очистки кэша')
             new = open('processlog.txt', 'a')
             new.write(str(timing) + ' Очистка кэша бота: Ошибка\n')
             new.close()
@@ -649,7 +680,6 @@ def answer(call):
             start_file.close()
 
 
-            time.sleep(2)
             os.system("taskkill /f /im  main.exe")
 
 
@@ -684,7 +714,7 @@ def answer(call):
 
 
 
-    elif call.data == 'Промежуток у Авто-Скрин.':
+    elif call.data == 'Изменить промежуток у Авто-Скрин.':
         def write_time_auto(time_auto):
 
             if  int(time_auto.text) < 5:
@@ -742,6 +772,56 @@ def answer(call):
         t = bot.send_message(call.message.chat.id,'Введите запрос, для поиска в Wiki.')
         bot.register_next_step_handler(t,found)
 
+    
+    elif call.data == 'Промежуток Авто-Скрин.':
+        stats = open('timeauto.txt','r')
+        st = str(stats.read())
+        bot.send_message(call.message.chat.id,f'Промежуток равен: {st} сек.')
+        stats.close()
+
+
+
+    elif call.data == 'Анализ папок.':
+        def scan(adres):
+            adres = adres.text
+            try:
+                adres = os.listdir(adres)
+                s = ''
+                k = 0
+                video = 0
+                app = 0
+                office = 0
+                music = 0
+                puicters = 0
+                zipi =0 
+                for i in adres:
+                    s += i+'\n'
+                    k+=1
+                    if '.mp3' in i:
+                        music +=1
+                    elif '.mp4' in i or '.mov' in i:
+                        video+=1
+                    elif '.exe' in i or '.msi' in i:
+                        app +=1
+                    elif '.pptx' in i or '.pdf' in i or '.docx' in i or '.txt' in i:
+                        office +=1
+                    elif '.jpg' in i or '.png' in i:
+                        puicters+=1
+                    elif '.zip' in i or '.jar' in i or '.iso' in i:
+                        zipi+=1
+
+                
+            
+                bot.send_message(call.message.chat.id,s+f'\nВсего файлов сканировано: {k}\n\t\tВидео: {video}\n\t\tКартинки: {puicters}\n\t\tЗвуки: {music}\n\t\tПриложения: {app}\n\t\tMC-Office: {office}\n\t\tАрхивы: {zipi}\n\t\tДругие файлы: {k-music-video-app-office-puicters-zipi}')
+
+            except:
+                bot.send_message(call.message.chat.id,'Ошибка ввода пути.')
+                
+
+        ent = bot.send_message(call.message.chat.id,'Введите путь, который нужно просканировать:')
+        bot.register_next_step_handler(ent,scan)
+
+    
 
 
 
@@ -770,8 +850,8 @@ def bot_message(message):
             but_on = types.InlineKeyboardButton(text='Включить клавиатуру.', callback_data='Включить клавиатуру.')
             but_off = types.InlineKeyboardButton(text='Выключить клавиатуру.', callback_data='Выключить клавиатуру.')
             but_autowrite = types.InlineKeyboardButton(text='Напечатать текст.', callback_data='Напечатать текст.')
-            key_klav.add(but_on)
             key_klav.add(but_off)
+            key_klav.add(but_on)
             key_klav.add(but_autowrite)
             bot.send_message(message.chat.id, 'Список действий с клавиатурой:', reply_markup=key_klav)
 
@@ -825,25 +905,23 @@ def bot_message(message):
             start_file.close()
             key_pc = types.InlineKeyboardMarkup()
             but_pc_off = types.InlineKeyboardButton(text='Выключить компьютер.', callback_data='Выключить компьютер.')
-            but_pc_restart = types.InlineKeyboardButton(text='Перезагрузить компьютер.',
-                                                        callback_data='Перезагрузить компьютер.')
+            but_pc_restart = types.InlineKeyboardButton(text='Перезагрузить компьютер.', callback_data='Перезагрузить компьютер.')
             but_pc_sleep = types.InlineKeyboardButton(text='Спящий режим.', callback_data='Спящий режим.')
             but_pc_process = types.InlineKeyboardButton(text='Системные процессы.', callback_data='Системные процессы.')
             # but_pc_site_block = types.InlineKeyboardButton(text='Программа блокировки сайтов.',callback_data='Программа блокировки сайтов.')
             # but_pc_site_unblock = types.InlineKeyboardButton(text='Программа разблокировки сайтов.',callback_data='Программа разблокировки сайтов.')
             but_pc_name = types.InlineKeyboardButton(text='Название компьютера.', callback_data='Название компьютера.')
-            but_pc_name_processor = types.InlineKeyboardButton(text='Название процессора.',
-                                                               callback_data='Название процессора.')
-            but_pc_name_os = types.InlineKeyboardButton(text='Название операционной системы.',
-                                                        callback_data='Название операционной системы.')
+            but_pc_name_processor = types.InlineKeyboardButton(text='Название процессора.',callback_data='Название процессора.')
+            but_pc_name_os = types.InlineKeyboardButton(text='Название операционной системы.', callback_data='Название операционной системы.')
             # button_start_file = types.InlineKeyboardButton(text = 'Запустить файл.',callback_data='Запустить файл.')
-            button_crash_process = types.InlineKeyboardButton(text='Завершить процесс.',
-                                                              callback_data='Завершить процесс.')
-            button_active_pc = types.InlineKeyboardButton(text='График активности компьтера.',
-                                                          callback_data='График активности компьтера.')
+            button_crash_process = types.InlineKeyboardButton(text='Завершить процесс.',callback_data='Завершить процесс.')
+            button_active_pc = types.InlineKeyboardButton(text='График активности компьтера.',callback_data='График активности компьтера.')
             # button_go_photo = types.InlineKeyboardButton(text='Отправить фото с компьютера.',callback_data='Отправить фото с компьютера.')
-            key_pc.add(but_pc_off, but_pc_restart)
+            but_off_pc_time  = types.InlineKeyboardButton(text = 'Выключить через время.',callback_data='Выключить через время.')
+            but_rest_the_time = types.InlineKeyboardButton(text = 'Перезагрузить через время.',callback_data='Перезагрузить через время.')
+            key_pc.add(but_pc_off,but_off_pc_time)
             # Переносим на новую строчку
+            key_pc.add(but_pc_restart,but_rest_the_time)
             key_pc.add(but_pc_sleep, but_pc_process)
             key_pc.add(but_pc_name, but_pc_name_processor)
             key_pc.add(but_pc_name_os)
@@ -865,9 +943,11 @@ def bot_message(message):
             button_save_file_on_pc = types.InlineKeyboardButton(text='Сохранить файл на компьютер.', callback_data='Сохранить файл на компьютер.')
             button_files = types.InlineKeyboardButton(text='Отправить файл с компьютера.',callback_data='Отправить файл с компьютера.')
             button_start_file = types.InlineKeyboardButton(text='Запустить файл.', callback_data='Запустить файл.')
+            button_scan = types.InlineKeyboardButton(text = 'Анализ папок.',callback_data='Анализ папок.')
             key_files.add(button_save_file_on_pc)
             key_files.add(button_files)
             key_files.add(button_start_file)
+            key_files.add(button_scan)
             bot.send_message(message.chat.id, 'Список действий с файлами:', reply_markup=key_files)
 
 
@@ -920,7 +1000,9 @@ def bot_message(message):
 
             key_dif = types.InlineKeyboardMarkup()
             search_wiki = types.InlineKeyboardButton(text='Поиск в Wikipedia.', callback_data='Поиск в Wikipedia.')
+            fix_error = types.InlineKeyboardButton(text = 'Исправить ошибки в тексте.',callback_data='Исправить ошибки в тексте.')
             key_dif.add(search_wiki)
+            #key_dif.add(fix_error)
             bot.send_message(message.chat.id, 'Другое:', reply_markup=key_dif)
 
 
@@ -938,21 +1020,25 @@ def bot_message(message):
 
             status = open('autoscreenstatus.txt','r+')
             now = str(status.read())
+            stats = open('timeauto.txt','r+')
+            auto = str(stats.read())
 
             key_bot = types.InlineKeyboardMarkup()
             but_bot_restart = types.InlineKeyboardButton(text = 'Перезагрузка бота.',callback_data='Перезагрузка бота.')
             but_bot_clen = types.InlineKeyboardButton(text='Очистить кэш бота.',callback_data='Очистить кэш бота.')
             #but_bit_installer = types.InlineKeyboardButton(text ='Очистить папку загрузок.',callback_data='Очистить папку загрузок.')
-            but_time_auto = types.InlineKeyboardButton(text = 'Промежуток у Авто-Скрин.',callback_data='Промежуток у Авто-Скрин.')
-            but3 = types.InlineKeyboardButton(text = f'Авто-скрин: {now}',callback_data='Автоскрин.')
+            but_time_auto = types.InlineKeyboardButton(text = 'Изменить промежуток у Авто-Скрин.',callback_data='Изменить промежуток у Авто-Скрин.')
+            but3 = types.InlineKeyboardButton(text = f'Режим Авто-скрин: {now}',callback_data='Автоскрин.')
+            inf_about_autoscreen = types.InlineKeyboardButton(text = f'Промежуток Авто-Скрин: {auto} сек.',callback_data='Промежуток Авто-Скрин.')
 
             status.close()
+            stats.close()
 
             key_bot.add(but_bot_restart)
             key_bot.add(but_bot_clen)
             key_bot.add(but3)
-            #key_bot.add(but_bit_installer)
             key_bot.add(but_time_auto)
+            key_bot.add(inf_about_autoscreen)
 
             bot.send_message(message.chat.id, 'Настройки бота:', reply_markup=key_bot)
 
@@ -961,7 +1047,6 @@ def bot_message(message):
 #      spelling = Speller(lang='ru')
  #       elif  spelling(message.text) in big_list:
   #          pass
-
 
 
 

@@ -21,10 +21,12 @@ todayday = datetime.today().weekday()
 
 while True:
     today = uptime()
+    print(today)
     time.sleep(1)
     today = int(today)
+    today = today//60//60
+    today = round(today)
     print(today)
-    print(type(today))
 
     if todayday == 0:
         mon = open('monday.txt','r+')

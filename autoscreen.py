@@ -1,6 +1,6 @@
 #import time
-#import pyautogui
-#import  datetime
+import pyautogui
+import  datetime
 #
 #
 #while True:
@@ -18,10 +18,13 @@ import random
 while True:
     file = open('timeauto.txt', 'r')
     timing = int(file.read())
-    file.close()
     time.sleep(timing)
-    k = random.randint(111111111, 999999999)
-    screen.doingscreen(f'savescreen/{k}.png')
+    file.close()
+    date = datetime.datetime.today()
+    tim = date.strftime('%H:%M:%S')
+    tim = str(tim)
+    tim = tim.replace(':','.')
+    screen = pyautogui.screenshot(f'savescreen/{tim}.png')
 
 
 

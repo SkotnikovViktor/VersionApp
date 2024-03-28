@@ -6,6 +6,7 @@ mp.title('Активность компьютера.')
 
 day0 = open('monday.txt','r+')
 day0 = round(float(day0.read()))
+print(day0)
 
 
 day1 = open('tuesday.txt','r+')
@@ -36,15 +37,17 @@ print(type(day6))
 
 
 x = ['Понедельник','Вторник','Среда','Четверг','Пятница','Суббота','Воскресенье']
-y = [round((day0/60)/60),round((day1/60)/60),round((day2//60)/60),round((day3/60)/60),round((day4/60)/60),round((day5/60)/60),round((day6/60)/60)]
+print('1',day0)
+y = [day0,day1,day2,day3,day4,day5,day6]
 
 
-mp.bar(x,y,label = 'Активность ПК')
+mp.bar(x,y,label = 'Активность компьютера.')
 #mp.plot(x,y,color = 'red',marker = 'o',markersize = 7)
 
 mp.xlabel('Дни недели')
 mp.ylabel('Кол-во часов')
 mp.savefig('MonitorCheck.png')
+mp.show()
 
 
 

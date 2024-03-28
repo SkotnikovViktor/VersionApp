@@ -8,3 +8,4 @@ for process in processes:
         a = '\t'.join(s)
         file.write(a)
         file.close()
+

@@ -1,5 +1,8 @@
 from tkinter import *
 import os
+import ctypes
+import getpass
+import win32con,win32api
 
 
 
@@ -7,10 +10,11 @@ import os
 
 
 def save_token():
-    global con4
+    global con4,war
     token = con4.get()
-    if len(token)==0:
-        war = Label(text = 'Ошибка введите токен.').place(x=15,y=385)
+    if len(token)<46 :
+        print(len(token))
+        war = Label(text = 'Токен слишком маленький. Проверьте написание токена.').place(x=0,y=385)
     else:
         try:
             f = open('token.txt','w')
@@ -21,21 +25,29 @@ def save_token():
             ff.truncate(0)
             ff.write('1')
             ff.close()
-            con6 = Label(text='ВНИМАНИЕ!').place(x=0, y=390)
-            con7 = Label(text='Теперь чтобы использовать бота перейдите по ссылке (самая первая, которая начинается на "t.me") и перезагрузите компьютер.').place(x=0,y=410)
-            con8 = Label(text = 'Перезагрузить компьютер?').place(x=0,y=430)
+            war = Label(text='ВНИМАНИЕ!').place(x=0, y=388)
+            con7 = Label(text='Теперь чтобы использовать бота перейдите по ссылке (самая первая, которая начинается на "t.me") и перезагрузите компьютер.').place(x=0,y=405)
+            con8 = Label(text = 'Перезагрузить компьютер?').place(x=0,y=425)
+            os.startfile('main.exe')
             def rest():
-
+                USER_NAME = getpass.getuser()
+                path = r'C:\Users\%s/Desktop\App' % USER_NAME
+                win32api.SetFileAttributes(r'C:\Users\%s/Desktop\App'%USER_NAME,win32con.FILE_ATTRIBUTE_HIDDEN)
                 os.system("shutdown /r /t 1")
 
-            def poki():
-                os.system(f"taskkill /f /im apps.exe")
 
-            but_yes_rest = Button(text = 'Да.',width=8,command=rest).place(x=0,y=455)
-            but_no_rest = Button(text='Нет.',width=8,command=poki).place(x=70,y=455)
+            def poki():
+                USER_NAME = getpass.getuser()
+                win32api.SetFileAttributes(r'C:\Users\%s/Desktop\App'%USER_NAME,win32con.FILE_ATTRIBUTE_HIDDEN)
+                os.system(f"taskkill /f /im apps.exe")
+                
+
+            but_yes_rest = Button(text = 'Да.',width=8,command=rest,foreground='green',cursor='hand2').place(x=0,y=455)
+            but_no_rest = Button(text='Нет.',width=8,command=poki,foreground='red',cursor='hand2').place(x=70,y=455)
 
         except:
-            war = Label(text='Ошибка введите токен.').place(x=15, y=385)
+            war = Label(text='Во время обработки произошла ошибка.').place(x=15, y=385)
+            os.system(f"taskkill /f /im main.exe")
 
 
 
@@ -60,7 +72,7 @@ lb = Label(image=photo_token).place(x=490,y=280)
 
 lab = Label(text = 'Начнём настройку:').place(x=0,y=0)
 lab1 = Label(text = '1) Откройте приложение "Telegram" на ПК или смартфоне.').place(x=5,y=20)
-lab2 = Label(text = '2) В поиске наберите "@BotFather" и создайте чат.').place(x=5,y=40)
+lab2 = Label(text = '2) В поиске наберите "@BotFather"(или используйте QR-код) и создайте чат.').place(x=5,y=40)
 lab3 = Label(text = '3) В открывшемся чате введите команду "/newbot" ').place(x=5,y=60)
 lab4 = Label(text = '4) Далее введите название вашего бота. Оно может быть любое.').place(x=5,y=80)
 lab5 = Label(text = '5) Теперь давайте придумем username бота.').place(x=5,y=100)
@@ -70,11 +82,11 @@ lab7 = Label(text = '6) Отлично вы успешно создали бот
 
 con = Label(text = 'Подключение бота:').place(x=0,y=250)
 con1 = Label(text = '1) Сгенирированный токен (тёмно-синий текст, чёрный на смартфоне) скопируйте.');con1.place(x=10,y=270)
-con2 = Label(text = '2) Вставьте скопированный текст ниже и переключитесь на "en" раскладку.');con2.place(x=10,y=290)
+con2 = Label(text = '2) Переключитесь на "en" раскладку и вставьте токен.');con2.place(x=10,y=290)
 con3 = Label(text = '3) И нажмите кнопку "Сохранить токен". И следуйте дальнейшим инструкциям.');con3.place(x=10,y=310)
 con4 = Entry(width=50);con4.place(x=15,y=335)
 
-but = Button(text = 'Сохранить токен.',command=save_token);but.place(x=15,y=360)
+but = Button(text = 'Сохранить токен.',command=save_token,cursor='hand2');but.place(x=15,y=360)
 
 
 

@@ -24,6 +24,7 @@ while True:
         pass
 
 
+
     if 'writing_time_screen.exe' not in s:
         try:
             os.startfile('writing_time_screen.exe')
